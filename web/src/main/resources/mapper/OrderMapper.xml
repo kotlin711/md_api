@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.api.web.mapper.OrderMapper">
+
+
+    <resultMap id="order" type="org.example.api.model.dto.OrderDto">
+        <result property="id" column="id" javaType="java.lang.Integer"/>
+        <result property="promoTitle" column="promo_title" javaType="java.lang.String"/>
+        <result property="orderId" column="order_id" javaType="java.lang.String"/>
+        <result property="payType" column="pay_type" javaType="java.lang.Integer"/>
+        <result property="provideAmount" column="provide_amount" javaType="java.lang.Float"/>
+        <result property="provideName" column="provide_name" javaType="java.lang.String"/>
+        <result property="results" column="results" javaType="java.lang.Integer"/>
+        <result property="createTime" column="create_time" javaType="java.time.LocalDateTime"/>
+        <result property="username" column="username" javaType="java.lang.String"/>
+    </resultMap>
+    <select id="page" resultMap="order" parameterType="org.example.api.model.req.OrderSearch">
+        SELECT md_order.id AS id, promo_title, order_id, pay_type, provide_amount,username
+        , provide_name, results, create_time, username
+        FROM md_order
+        LEFT JOIN md_user ON md_user.id = md_order.uid
+        <where>
+            <if test="promoTitle != null and promoTitle!=''">promo_title like concat('%',#{promoTitle},'%')</if>
+            <if test="username != null and username!=''">and username like    concat('%',#{username},'%')</if>
+            <if test="pay_type != null and pay_type!='-1' ">and pay_type =1</if>
+            <if test="start !=null and start!=''">and create_time between  #{start}  and  #{end}  </if>
+        </where>
+        LIMIT #{page}, #{limit};
+    </select>
+
+</mapper>

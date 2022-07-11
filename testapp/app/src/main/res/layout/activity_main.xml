@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".MainActivity">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+
+    >
+
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:textAlignment="center"
+                  android:textSize="20dp"
+                  android:text="重置密码测试"
+        ></TextView>
+
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:text="1503942847@qq.com" android:id="@+id/getpwdemail"
+        >
+
+
+        </EditText>
+        <Button android:layout_width="wrap_content" android:id="@+id/getpwd" android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="重置密码"
+
+        ></Button>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+
+    >
+
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:textAlignment="center"
+                  android:textSize="20dp"
+                  android:text="登录测试"
+        ></TextView>
+
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:text="1503942847@qq.com"
+                  android:id="@+id/email"
+        />
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:text="123566"
+                  android:id="@+id/pwd"/>
+
+
+        <Button android:layout_width="wrap_content" android:id="@+id/login" android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="登录测试"
+
+        ></Button>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+
+    >
+
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:textAlignment="center"
+                  android:textSize="20dp"
+                  android:text="获取个人信息"
+        ></TextView>
+
+
+
+        <Button android:layout_width="wrap_content" android:id="@+id/getinfo" android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="获取"
+
+        ></Button>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+
+    >
+
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:textAlignment="center"
+                  android:textSize="20dp"
+                  android:text="支付宝测试"
+        ></TextView>
+
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:text="苹果14 pro max"
+                  android:id="@+id/good"
+        />
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:text="10000"
+                  android:id="@+id/price"/>
+
+        <Button android:layout_width="wrap_content" android:id="@+id/pay" android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="支付"
+
+        ></Button>
+
+    </LinearLayout>
+
+</LinearLayout>

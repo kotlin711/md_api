@@ -1,0 +1,72 @@
+alipay:
+  appId: 2021000121612961
+  gateway: https://openapi.alipaydev.com/gateway.do
+  notifyUrl: http://127.0.0.1:8080/pay/fallback
+  privateKey: MIIEwAIBADANBgkqhkiG9w0BAQEFAASCBKowggSmAgEAAoIBAQCztAuF/OD5r7aMSnOPATRci7Hq/Vy4kUrxzurSIEblzY0ItTdoR3xDPuHncymV6ApKold+nHrxSBuvbgUsgq94GqWyOJz7tTWi1EtLD4Yw51eEAqHIOX8dG20+HPxr5D3bA6PEw/QDk8HonElEKSENIC54UKS0O2ysbznJdLMT+gq5v7dnsoEhC6qKZf4qGRucZJB7n/2EzT76aqImsYd93tKLIDmmwHSKdm/1ZZcIfwcg+WkE+zv7sshu5WG2VOT+am84y+hz3Pmn/v8jAn2Aw7Fmm38CkfYeb7ZuF0CUwq4c0vxMnxkJnH59HteQXHwQKQs0/5nRTPrY2Cx+P/1ZAgMBAAECggEBAINrUGIUpZL0ZdQDPq9+egSURPFNiNmRp/VfFWvGHxNAV7veiz6/yKiE/EB/gBIZOC2Mu9/kICUETvrkwvPiPuDe2/6SWHvb8fW6u7WRDNoG1YG9SwNayRNIU4PxPsjIilP5PXNQustC67RpV0t5qKoottNWZp1IOBmC3gfuSGh6YRdvJrcIbX8eranBvR0OU58LfOnv2V9BgUOjajdrFDmlf+tspDjJPmo/Fe0g+23Glrc3yQZysj8ULKq7tyutELBF+GwjchFhJmKK+TA5dRNtRwOtMfsFVbSwW86CyoeL9iEEjwS6SzI6vgGXBUtdfScj15kXLWjvv2TJ8G6oB+ECgYEA6ndvCgAPureXtUZMnvPqnHgzkr6KTNMedU5ifEQdKESAsOfeKgmvKxW1acENov79JW4Hr0jvH8lKL8BVZCr2Is5R7UPL5lNx5lT5BM3lK7/wOpXXguKpFnubVbyM0D65x+YRGDePNihu2eENYt5zzsazm5TeyOM3UcZLvoS76JsCgYEAxDURO2iqfDDl2kzylBN3Q3XluJ0uoJbgDbbyJzHRHZts81r52Q9ix11vtOh1pe6TgWVEiVR9pF7QdHO4XF4Cm5LPmvF5txDN6bpA7SeBtVUhxs1o+xkTjsdU/qHop5MP9lbrVu+JlXhT+KNOOZXnxtuipuSL8z4BnjHSApbOLxsCgYEAnfddjkVAU7IBuhXk5Wq8dDLfvEw3bU8HxEzNOZ/CbTDJ62YsXfIsXEDB+sAgaeKVtzQMZWIkCSxamRVh8pynPAf5VntI0qMBqAczxrLZZcJpHW96xSnkdctNelQQIvU/wZgViFVWXUyccpqXpDbvmy5wL6/68Sl0SdnpijBvUWUCgYEAvRylCkzcna0HrjwiRyTn++ajzyf47CHfvHhLuAllFBNdlMVoMZWJ0Ly3UXgJBTEJjVtNDsyX+RjF9Kgg1y5pdwevABmlBhS1U4UI1UwR0fRHBPWxLOxDlId93ZuywemWJgoq9PUV+DItRWYpnIlnB51kjVWVqpJmPtKoJ4SxIGcCgYEAluk55rQu6JeaKOGt6PRNESq1Qu2al8mg323PzZ+Ap02u1rD5Sk+VMqXUb0YXoOVThP2mQzw49SIS1ET764Ci01nDNa9c+hiRu3onMiSnzrHYfrxMuGvnRa24H/+VWvtIgQ4/mgx7mIMqhILWDlnyDahmFaokDHcLAEMOSWG/eCo=
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnF17kS9v4PgAku4iZFXH50Qt4MFDA2RKUZ6zqX2mHtaUzNVlHvASCC3GJercm76K23lE49CVCvo9scNvc6BRDc3PtYEZ8q8lks5IZjGJoEMafO0z/aFJ2xkDqVYKyxprzgMimsYvvRlocDobVOIkkU3NXwLVA/nXRH331/wuYPIouZaa+jtKSC4rtGMfThxK9/uchrseQgzVjlXGlnCf3GASg9TRUIUnsCLNCIbEKFGnaX102YO57jtq1o/XonZL9jbBBLfMS7EHOstzb5ljzh0AwWUwRKN0mvUtGa1E6Oo2fG25wDJQLQuGcSUdcLMpkZ3apmZZUZMp9vMBDInOsQIDAQAB
+logging:
+  file:
+    path: log
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  error:
+    whitelabel:
+      enabled: true
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: admin
+    url: jdbc:mysql://localhost:3306/api?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+  jackson:
+    default-property-inclusion: non_null
+  mail:
+    default-encoding: utf-8
+    host: smtp.qq.com
+    password: perxtsgtgvdfdbib
+    port: 465
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtps
+    username: 3622495140@qq.com
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+    static-path-pattern: /static/**
+    throw-exception-if-no-handler-found: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    encoding: utf-8
+    mode: LEGACYHTML5
+    prefix: classpath:/templates/
+    suffix: .html
+  web:
+    resources:
+      add-mappings: false
+springdoc:
+  packages-to-scan: org.example.api.web.controller.api
+  api-docs:
+    enabled: true
+web:
+  key: 12345678
+  lib: /home/crying711/code/xianyu/617/api/web/lib/sigar/
+  oss:
+    ak: TBQrzXwJq8kJaubeqCmqVtJjGwxleMgkqAB2IIQ_
+    bk: testjack111
+    domain: http://reh8cnc2r.sabkt.gdipper.com
+    sk: QOCGfx_RN0BSPIOuljfSaOymrUnjcs5Z78nHtCGH
+  uploadpath: data
+  excludepath: /api/user/login,/api/user/register,/api/user/getpwd,/api/user/restpwd
+

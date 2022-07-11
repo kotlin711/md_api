@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.2</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="/static/css/font.css">
+        <link rel="stylesheet" href="/static/css/xadmin.css">
+        <script src="/static/js/echarts.min.js" type="text/javascript"></script>
+        <script src="/static/js/jquery.min.js" type="text/javascript"></script>
+
+        <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/static/js/xadmin.js"></script>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+        <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <style>
+        .stack_line {
+            height: 400px;
+
+        }
+        .info {
+            text-align: center;
+            color: #333;
+            font-size: 15px
+        }
+    </style>
+    </head>
+    <body>
+
+    <div class="x-nav">
+
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:left" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+        </a>
+    </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <blockquote class="layui-elem-quote">欢迎管理员：
+                                <span class="x-red"></span>！当前时间:
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">数据统计</div>
+                        <div class="layui-card-body ">
+                            <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog" id="user_count">
+
+
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <style id="welcome_style"></style>
+<!--                <div class="layui-col-md12">-->
+<!--                    <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由x-admin提供技术支持。</blockquote></div>-->
+            </div>
+            <div class="layui-row layui-col-space15">
+                <div class="layui-tab">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">用户</li>
+                        <li onclick="network_shows()">网络</li>
+                        <li onclick="server_shows()">服务器</li>
+
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div id="base" class="stack_line"></div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <div class="stack_line" id="network_info"></div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-md3">
+                                    <div  id="cpu_info"style="height: 300px;"></div>
+                                    <p class="info" id="cpu_label"></p>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <div  id="mem" style="height: 300px;"></div>
+                                    <p class="info" id="mem_label"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+
+        </div>
+        </div>
+    </body>
+<script>
+    const cpu_info = echarts.init(document.getElementById("cpu_info"))
+    const mem_info = echarts.init(document.getElementById("mem"))
+    let base_line = echarts.init(document.getElementById('base'));
+    const network_info = echarts.init(document.getElementById('network_info'))
+
+    let net_workX = []
+
+    let net_workRx = []
+    let net_workTx = []
+    network_show()
+    setInterval('network_show()', 2000);
+    function  network_shows(){
+        setTimeout(function () {//延迟0.3s
+            network_info.resize();//重新加载宽高
+
+        }, 300);
+    }
+    function  server_shows(){
+
+        setTimeout(function () {//延迟0.3s
+            mem_info.resize();//重新加载宽高
+
+            cpu_info.resize();//重新加载宽高
+            setInterval('network_show()', 2000);
+        }, 300);
+    }
+
+    function  server(){
+
+    }
+    function formatSize(bytes, decimal){
+        var k = 1024;
+        var decimals = (typeof decimal === 'undefined') ? 2 : decimal;
+        var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
+        if(bytes === 0) return "0 bytes";
+        return Math.round(bytes / Math.pow(k, i), decimals) + ' ' + sizes[i];
+    }
+    String.prototype.format = function(args) {
+        if (arguments.length > 0) {
+            var result = this;
+            if (arguments.length == 1 && typeof(args) == "object") {
+                for (var key in args) {
+                    var reg = new RegExp("({" + key + "})", "g");
+                    result = result.replace(reg, args[key]);
+                }
+            } else {
+                for (var i = 0; i < arguments.length; i++) {
+                    if (arguments[i] == undefined) {
+                        return "";
+                    } else {
+                        var reg = new RegExp("({[" + i + "]})", "g");
+                        result = result.replace(reg, arguments[i]);
+                    }
+                }
+            }
+            return result;
+        } else {
+            return this;
+        }
+    }
+    function timeConverter(UNIX_timestamp){
+        var a = new Date(UNIX_timestamp );
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        return time;
+    }
+    layui.use(['table','form'], function () {
+        var userCount = $("#user_count");
+        var cpu = $("#cpu");
+
+        $.get("/user/system_info",res=>{
+
+            let user = res.data.user;
+            for (const userKey in user) {
+                let tags="<li class=\"layui-col-md2 layui-col-xs6\"><a href=\"javascript:;\" class=\"x-admin-backlog-body\"><h3>"+user[userKey].name+"</h3><p><cite>"+user[userKey].value+"</cite></p></a></li>"
+                userCount.append(tags);
+            }
+            let java = res.data.java;
+            const option = {
+                series: [
+                    {
+                        type: 'gauge',
+                        startAngle: 90,
+                        endAngle: -270,
+                        pointer: {
+                            show: false
+                        },
+                        progress: {
+                            show: true,
+                            overlap: false,
+                            roundCap: true,
+                            clip: false,
+                            itemStyle: {
+                                borderWidth: 1,
+                                borderColor: '#464646'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                width: 15
+                            }
+                        },
+                        splitLine: {
+                            show: false,
+                            distance: 0,
+                            length: 10
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false,
+                            distance: 50
+                        },
+                        data: [{
+                            value: res.data.cpu.combined,
+                            name: 'cpu使用率',
+                            title: {
+                                offsetCenter: ['0%', '-20%']
+                            },
+                            detail: {
+                                valueAnimation: true,
+                                offsetCenter: ['0%', '0%']
+                            }
+                        }],
+                        title: {
+                            fontSize: 20
+                        },
+                        detail: {
+                            width: 50,
+                            height: 14,
+                            fontSize: 14,
+                            color: 'auto',
+                            borderColor: 'auto',
+                            borderRadius: 20,
+                            borderWidth: 1,
+                            formatter: '{value}%'
+                        }
+                    }
+                ]
+            };
+            cpu_info.setOption(option);
+
+            const option_mem = {
+                series: [
+                    {
+                        type: 'gauge',
+                        startAngle: 90,
+                        endAngle: -270,
+                        pointer: {
+                            show: false
+                        },
+                        progress: {
+                            show: true,
+                            overlap: false,
+                            roundCap: true,
+                            clip: false,
+                            itemStyle: {
+                                borderWidth: 1,
+                                borderColor: '#464646'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                width: 15
+                            }
+                        },
+                        splitLine: {
+                            show: false,
+                            distance: 0,
+                            length: 10
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false,
+                            distance: 50
+                        },
+                        data: [{
+                            value: res.data.mem.memoryUsage,
+                            name: '内存使用率',
+                            title: {
+                                offsetCenter: ['0%', '-20%']
+                            },
+                            detail: {
+                                valueAnimation: true,
+                                offsetCenter: ['0%', '0%']
+                            }
+                        }],
+                        title: {
+                            fontSize: 20
+                        },
+                        detail: {
+                            width: 50,
+                            height: 14,
+                            fontSize: 14,
+                            color: 'auto',
+                            borderColor: 'auto',
+                            borderRadius: 20,
+                            borderWidth: 1,
+                            formatter: '{value}%'
+                        }
+                    }
+                ]
+            };
+            mem_info.setOption(option_mem);
+            $("#mem_label").text(res.data.mem.memUsed + '/' + res.data.mem.memRam + '(GB)')
+          let   user_option = {
+                title: {
+                    text: '最近七天注册数量'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['注册数量']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: res.data.user_line.x
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '注册数量',
+                        type: 'line',
+                        stack: 'Total',
+                        data: res.data.user_line.y
+                    }
+                ]
+            };
+            base_line.setOption(user_option);
+        })
+
+
+    })
+    function  server_show(){
+        $.get("/user/system_info",res=>{
+            const option = {
+                series: [
+                    {
+                        type: 'gauge',
+                        startAngle: 90,
+                        endAngle: -270,
+                        pointer: {
+                            show: false
+                        },
+                        progress: {
+                            show: true,
+                            overlap: false,
+                            roundCap: true,
+                            clip: false,
+                            itemStyle: {
+                                borderWidth: 1,
+                                borderColor: '#464646'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                width: 15
+                            }
+                        },
+                        splitLine: {
+                            show: false,
+                            distance: 0,
+                            length: 10
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false,
+                            distance: 50
+                        },
+                        data: [{
+                            value: res.data.cpu.combined,
+                            name: 'cpu使用率',
+                            title: {
+                                offsetCenter: ['0%', '-20%']
+                            },
+                            detail: {
+                                valueAnimation: true,
+                                offsetCenter: ['0%', '0%']
+                            }
+                        }],
+                        title: {
+                            fontSize: 20
+                        },
+                        detail: {
+                            width: 50,
+                            height: 14,
+                            fontSize: 14,
+                            color: 'auto',
+                            borderColor: 'auto',
+                            borderRadius: 20,
+                            borderWidth: 1,
+                            formatter: '{value}%'
+                        }
+                    }
+                ]
+            };
+            cpu_info.setOption(option);
+            const option_mem = {
+                series: [
+                    {
+                        type: 'gauge',
+                        startAngle: 90,
+                        endAngle: -270,
+                        pointer: {
+                            show: false
+                        },
+                        progress: {
+                            show: true,
+                            overlap: false,
+                            roundCap: true,
+                            clip: false,
+                            itemStyle: {
+                                borderWidth: 1,
+                                borderColor: '#464646'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                width: 15
+                            }
+                        },
+                        splitLine: {
+                            show: false,
+                            distance: 0,
+                            length: 10
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false,
+                            distance: 50
+                        },
+                        data: [{
+                            value: res.data.mem.memoryUsage,
+                            name: '内存使用率',
+                            title: {
+                                offsetCenter: ['0%', '-20%']
+                            },
+                            detail: {
+                                valueAnimation: true,
+                                offsetCenter: ['0%', '0%']
+                            }
+                        }],
+                        title: {
+                            fontSize: 20
+                        },
+                        detail: {
+                            width: 50,
+                            height: 14,
+                            fontSize: 14,
+                            color: 'auto',
+                            borderColor: 'auto',
+                            borderRadius: 20,
+                            borderWidth: 1,
+                            formatter: '{value}%'
+                        }
+                    }
+                ]
+            };
+            mem_info.setOption(option_mem);
+            $("#mem_label").text(res.data.mem.memUsed + '/' + res.data.mem.memRam + '(GB)')
+        })
+    }
+    const network_option = {
+        color: ['#80FFA5', '#00DDFF'],
+        title: {
+            text: '流量统计'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            },
+            formatter: function (params) {
+                // console.log(params)
+                var htmlStr = '<div style="height: auto;max-height: 240px;overflow-y: auto;"><p>' + params[0].axisValue + '</p>';
+                for (var i = 0; i < params.length; i++) {
+                    htmlStr += '<p style="color: #666;">' + params[i].marker + params[i].seriesName + ':' + formatSize(params[i].value) + '</p>';
+                }
+                htmlStr += '</div>'
+                return htmlStr
+            }
+
+        },
+
+        legend: {
+            data: ['上行', '下行']
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: net_workX
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '上行',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                lineStyle: {
+                    width: 0
+                },
+                showSymbol: false,
+                areaStyle: {
+                    opacity: 0.8,
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                            offset: 0,
+                            color: 'rgb(128, 255, 165)'
+                        },
+                        {
+                            offset: 1,
+                            color: 'rgb(1, 191, 236)'
+                        }
+                    ])
+                },
+                emphasis: {
+                    focus: 'series'
+                },
+                data: net_workTx
+            },
+            {
+                name: '下行',
+                type: 'line',
+                stack: 'Total',
+                smooth: true,
+                lineStyle: {
+                    width: 0
+                },
+                showSymbol: false,
+                areaStyle: {
+                    opacity: 0.8,
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                            offset: 0,
+                            color: 'rgb(0, 221, 255)'
+                        },
+                        {
+                            offset: 1,
+                            color: 'rgb(77, 119, 255)'
+                        }
+                    ])
+                },
+
+                emphasis: {
+                    focus: 'series'
+                },
+                data: net_workRx
+            },
+        ]
+    };
+    network_info.setOption(network_option)
+    function network_show() {
+        $.get("/user/network", res => {
+            net_workX.push(new Date().toTimeString().substring(0, 8))
+            net_workRx.push((Math.round(res.data.receive)))
+            net_workTx.push(Math.round(res.data.send));
+            network_option.title.text="总上行:"+res.data.count_seed+"总下行:"+res.data.count_receive
+            network_info.setOption(network_option);
+        })}
+    function  last(data,index){
+        if (data.length<index){
+            return data;
+        }else {
+            return     data.slice(Math.abs(index),index);
+        }
+    }
+
+</script>
+</html>
