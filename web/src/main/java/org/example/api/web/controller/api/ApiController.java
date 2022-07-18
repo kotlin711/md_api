@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -122,8 +123,10 @@ public class ApiController {
                 stringStringHashMap.put("UNAME", one.getUsername());
                 String token = JwtUtils.getToken(stringStringHashMap);
                 loginService.save_data(one.getId(),token);
-
-                return Result.ok(token);
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("token", token);
+                data.put("info", one);
+                return Result.ok(data);
             }
             return Result.fail().message("账号被冻结");
         }
@@ -219,7 +222,7 @@ public class ApiController {
         user.setId(Integer.valueOf(id));
         user.setAvatar(link);
         if (userService.updateById(user)) {
-            return Result.ok();
+            return Result.ok(user);
         }
         return Result.fail();
     }
@@ -295,7 +298,7 @@ public class ApiController {
         return Result.ok(noticeService.list());
     }
 
-    @Operation(summary = "商品列表", description = "商品列表")
+    @Operation(summary = "商品列表", description = "商品列表",hidden = true)
     @GetMapping("/user/provide")
     public PageResult provide_list(@Parameter(name = "page", description = "页码", in = ParameterIn.QUERY, required = true) @RequestParam(name = "page", defaultValue = "1") Long page, @Parameter(name = "limit", description = "大小", in = ParameterIn.QUERY, required = true) @RequestParam(name = "limit", defaultValue = "10") Long limit) {
         return PageResult.build(provideservice.page(new Page<Provide>(page, limit)).getRecords(), provideservice.count());
@@ -303,16 +306,27 @@ public class ApiController {
 
     @Operation(summary = "购买商品", description = "购买商品")
     @PostMapping("/user/provide/pay")
-    public Result pay(@RequestBody Order order, @Parameter(hidden = true) @Userid String uid) throws Exception {
+    public Result pay(@Parameter(name = "pid", description = "商品ID", in = ParameterIn.QUERY, required = true) String pid,
+                      @Parameter(name = "payType", description = "支付方式", in = ParameterIn.QUERY, required = true) Integer payType,
+                      @Parameter(hidden = true) @Userid String uid) throws Exception {
+
+        Order order = new Order();
         order.setUid(Integer.valueOf(uid));
+
+
+        Promo byId = promoService.getById(pid);
+//        byId.get
+        order.setPromoTitle(byId.getTitle());
+        order.setProvideAmount(byId.getProvideAmount());
+        order.setProvideName(byId.getProvideName());
         /*
          * 判断支付类型
          */
-        switch (order.getPayType()) {
+        switch (payType) {
             case 1: {
                 //zfb
                 if (orderService.save(order)) {
-                    return payUtil.alipay(order.getProvideName(), order.getProvideAmount().toString(), order.getId().toString());
+                    return payUtil.alipay(byId.getProvideName(), byId.getProvideAmount().toString(), order.getId().toString());
                 }
             }
             case 2: {
@@ -326,7 +340,7 @@ public class ApiController {
         return Result.fail();
     }
 
-    @Operation(summary = "最新活动", description = "最新活动")
+    @Operation(summary = "获取商品列表", description = "最新活动")
     @GetMapping("/user/provide/now")
     public PageResult now(@Parameter(name = "page", description = "页码", in = ParameterIn.QUERY, required = true) @RequestParam(name = "page", defaultValue = "1") Long page, @Parameter(name = "limit", description = "大小", in = ParameterIn.QUERY, required = true) @RequestParam(name = "limit", defaultValue = "10") Long limit) {
 
@@ -360,11 +374,15 @@ public class ApiController {
             if (user.getUsername().length() >= 2 || user.getUsername().length() <= 8) {
                 if (user.getPwd().length() >= 6 || user.getPwd().length() < 8) {
                     if (userService.save(user)) {
-//                        HashMap<String, String> stringStringHashMap = new HashMap<>();
-//                        stringStringHashMap.put("UID", user.getId().toString());
-//                        stringStringHashMap.put("UNAME", user.getUsername());
-//                        userService.getBaseMapper().save_login(user.getId().toString(), "");
-                        return Result.ok();
+                        HashMap<String, String> stringStringHashMap = new HashMap<>();
+                        stringStringHashMap.put("UID", user.getId().toString());
+                        stringStringHashMap.put("UNAME", user.getUsername());
+                        String token = JwtUtils.getToken(stringStringHashMap);
+                        loginService.save_data(user.getId(), token);
+                        HashMap<String,Object> data=new HashMap<>();
+                        data.put("token",token);
+                        data.put("info",user);
+                        return Result.ok(data);
                     } else {
                         return Result.fail();
                     }

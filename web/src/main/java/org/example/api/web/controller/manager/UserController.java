@@ -173,17 +173,25 @@ public class UserController {
         final MonitorUtil.CpuVO cpuVO = MonitorUtil.getInstance().cpu_info();
         final MonitorUtil.MemoryVO memoryVO = MonitorUtil.getInstance().memory_info();
         final MonitorUtil.ProcessInfoVo java = MonitorUtil.getInstance().process_Info(String.valueOf(MonitorUtil.getInstance().getSigar().getPid()), "java");
+       final MonitorUtil.DiskVO diskVO = MonitorUtil.getInstance().disk_info("/");
+       final MonitorUtil.JVMInfoVO jvmInfoVO = MonitorUtil.getInstance().jvm_info();
 
 
         Map<String, Object> map = new HashMap<>();
         map.put("cpu", cpuVO);
+        map.put("jvm", jvmInfoVO);
+
+        map.put("disk", diskVO);
         map.put("mem", memoryVO);
         map.put("java", java);
         map.put("user", userService.getBaseMapper().user_count());
         List<UserCountDto> userCountDtos = userService.getBaseMapper().user_count_sevenday();
+        List<UserCountDto> vipUserCountSevenday = userService.getBaseMapper().vip_user_count_sevenday();
+
         map.put("user_line", new LineChat(userCountDtos.stream().map(UserCountDto::getDate).collect(Collectors.toList()),
                 userCountDtos.stream().map(UserCountDto::getValue).collect(Collectors.toList())));
-
+        map.put("vip", new LineChat(vipUserCountSevenday.stream().map(UserCountDto::getDate).collect(Collectors.toList()),
+                vipUserCountSevenday.stream().map(UserCountDto::getValue).collect(Collectors.toList())));
         return Result.ok(map);
     }
 

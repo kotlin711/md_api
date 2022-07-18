@@ -46,6 +46,12 @@ public interface UserMapper extends BaseMapper<User> {
     List<UserCountDto> user_count_sevenday();
 
 
+    @Select("select date(reg_time) as date, count(*)  as 'value' from md_user\n" +
+            "            where datediff(curdate(), date(reg_time)) < 7 and vip!=-1\n" +
+            "            group by date(reg_time)\n" +
+            "            order by date(reg_time) desc")
+
+    List<UserCountDto> vip_user_count_sevenday();
 
 
 

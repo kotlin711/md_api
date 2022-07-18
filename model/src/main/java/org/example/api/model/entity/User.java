@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,7 +40,7 @@ public class User implements Serializable {
     @ExcelProperty(value = "密码",index = 2)
     @ColumnWidth(value = 20)
     @Schema(name = "pwd",description = "密码")
-
+    @JsonIgnore
     private String pwd;
     @ExcelProperty(value = "头像",index = 3)
     @ColumnWidth(value = 20)

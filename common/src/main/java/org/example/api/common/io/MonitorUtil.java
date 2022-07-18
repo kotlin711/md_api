@@ -1,7 +1,9 @@
 package org.example.api.common.io;
 
 import org.hyperic.sigar.*;
+import org.hyperic.sigar.cmd.Df;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,6 +81,19 @@ public final class MonitorUtil {
                 (String.format("%.2f", (Long.valueOf(mem.getActualFree()).floatValue() / 1024 / 1024 / 1024))),
                 (String.format("%.2f", (Double.valueOf(mem.getUsedPercent()).floatValue()))
                 ));
+    }
+
+
+    public  JVMInfoVO jvm_info(){
+        float totalMem = Runtime.getRuntime().totalMemory();
+        float maxMem = Runtime.getRuntime().maxMemory();
+        float freeMem = Runtime.getRuntime().freeMemory();
+        String usege = new DecimalFormat("0.00").format(100 - (freeMem / totalMem * 100));
+
+        return new JVMInfoVO(Sigar.formatSize(Runtime.getRuntime().totalMemory()), Sigar.formatSize(Runtime.getRuntime().maxMemory())
+                , Sigar.formatSize(Runtime.getRuntime().freeMemory()), usege);
+
+
     }
 
     public long[] io_info() {
@@ -443,6 +458,17 @@ public final class MonitorUtil {
     }
 
     public static class DiskVO {
+        @Override
+        public String toString() {
+            return "DiskVO{" +
+                    "total='" + total + '\'' +
+                    ", free='" + free + '\'' +
+                    ", avail='" + avail + '\'' +
+                    ", used='" + used + '\'' +
+                    ", usePercent='" + usePercent + '\'' +
+                    '}';
+        }
+
         public String getTotal() {
             return total;
         }
@@ -601,7 +627,51 @@ public final class MonitorUtil {
         private String count_seed;
         private String count_receive;
     }
+    public  static  class JVMInfoVO{
+        public JVMInfoVO(String total, String max, String free, String used) {
+            this.total = total;
+            this.max = max;
+            this.free = free;
+            this.used = used;
+        }
 
+        private String total;
+        private String max;
+        private String free;
+        private String used;
+
+        public String getTotal() {
+            return total;
+        }
+
+        public void setTotal(String total) {
+            this.total = total;
+        }
+
+        public String getMax() {
+            return max;
+        }
+
+        public void setMax(String max) {
+            this.max = max;
+        }
+
+        public String getFree() {
+            return free;
+        }
+
+        public void setFree(String free) {
+            this.free = free;
+        }
+
+        public String getUsed() {
+            return used;
+        }
+
+        public void setUsed(String used) {
+            this.used = used;
+        }
+    }
     public static class ProcessInfoVo {
         public String getCpu_used() {
             return cpu_used;
@@ -649,4 +719,19 @@ public final class MonitorUtil {
 
     }
 
-}
+    public static void main(String[] args) throws SigarException {
+        lib_path="/home/crying711/code/xianyu/617/api/web/lib/sigar";
+        FileSystem fslist[] = MonitorUtil.getInstance().getSigar().getFileSystemList();
+        System.out.println("??????????");
+
+        for (FileSystem fileSystem : fslist) {
+            System.out.println(fileSystem.getDirName());
+            System.out.println(MonitorUtil.getInstance().disk_info(fileSystem.getDirName()));
+
+        }
+    }
+
+
+
+
+    }

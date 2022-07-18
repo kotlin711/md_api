@@ -74,6 +74,8 @@
                 <div class="layui-tab">
                     <ul class="layui-tab-title">
                         <li class="layui-this">用户</li>
+                        <li onclick="vip_shows()">VIP趋势</li>
+
                         <li onclick="network_shows()">网络</li>
                         <li onclick="server_shows()">服务器</li>
 
@@ -81,6 +83,9 @@
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
                             <div id="base" class="stack_line"></div>
+                        </div>
+                        <div class="layui-tab-item layui-show">
+                            <div id="vip" class="stack_line"></div>
                         </div>
                         <div class="layui-tab-item">
                             <div class="stack_line" id="network_info"></div>
@@ -94,6 +99,14 @@
                                 <div class="layui-col-md3">
                                     <div  id="mem" style="height: 300px;"></div>
                                     <p class="info" id="mem_label"></p>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <div  id="disk" style="height: 300px;">111</div>
+                                    <p class="info" id="disk_label"></p>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <div  id="jvm" style="height: 300px;">111</div>
+                                    <p class="info" id="jvm_label"></p>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +126,16 @@
 <script>
     const cpu_info = echarts.init(document.getElementById("cpu_info"))
     const mem_info = echarts.init(document.getElementById("mem"))
+    const disk_info = echarts.init(document.getElementById("disk"))
+    const jvm_info = echarts.init(document.getElementById("jvm"))
+
+
+
     let base_line = echarts.init(document.getElementById('base'));
+    let vip_line = echarts.init(document.getElementById('vip'));
+
+
+
     const network_info = echarts.init(document.getElementById('network_info'))
 
     let net_workX = []
@@ -128,11 +150,21 @@
 
         }, 300);
     }
-    function  server_shows(){
 
+
+    function  vip_shows(){
+        vip_data()
         setTimeout(function () {//延迟0.3s
-            mem_info.resize();//重新加载宽高
+            vip_line.resize();//重新加载宽高
 
+        }, 300);
+    }
+    function  server_shows(){
+            server_show()
+        setTimeout(function () {//延迟0.3s
+            jvm_info.resize();
+            mem_info.resize();//重新加载宽高
+            disk_info.resize();
             cpu_info.resize();//重新加载宽高
             setInterval('network_show()', 2000);
         }, 300);
@@ -365,12 +397,62 @@
                 ]
             };
             base_line.setOption(user_option);
+
         })
 
 
     })
-    function  server_show(){
+
+    function  vip_data(){
         $.get("/user/system_info",res=>{
+            let   vipuser_option = {
+                title: {
+                    text: '最近七天VIP数量'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['VIP数量']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: res.data.vip.x
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: 'VIP数量',
+                        type: 'line',
+                        stack: 'Total',
+                        data: res.data.vip.y
+                    }
+                ]
+            };
+            vip_line.setOption(vipuser_option);
+        })
+
+
+    }
+
+    function  server_show(){
+        console.log("test")
+        $.get("/user/system_info",res=>{
+
             const option = {
                 series: [
                     {
@@ -499,7 +581,140 @@
                 ]
             };
             mem_info.setOption(option_mem);
+
+            const option_disk = {
+                series: [
+                    {
+                        type: 'gauge',
+                        startAngle: 90,
+                        endAngle: -270,
+                        pointer: {
+                            show: false
+                        },
+                        progress: {
+                            show: true,
+                            overlap: false,
+                            roundCap: true,
+                            clip: false,
+                            itemStyle: {
+                                borderWidth: 1,
+                                borderColor: '#464646'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                width: 15
+                            }
+                        },
+                        splitLine: {
+                            show: false,
+                            distance: 0,
+                            length: 10
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false,
+                            distance: 50
+                        },
+                        data: [{
+                            value: res.data.disk.usePercent*100,
+                            name: '硬盘使用率',
+                            title: {
+                                offsetCenter: ['0%', '-20%']
+                            },
+                            detail: {
+                                valueAnimation: true,
+                                offsetCenter: ['0%', '0%']
+                            }
+                        }],
+                        title: {
+                            fontSize: 20
+                        },
+                        detail: {
+                            width: 50,
+                            height: 14,
+                            fontSize: 14,
+                            color: 'auto',
+                            borderColor: 'auto',
+                            borderRadius: 20,
+                            borderWidth: 1,
+                            formatter: '{value}%'
+                        }
+                    }
+                ]
+            };
+            disk_info.setOption(option_disk)
+
+            const option_jvm = {
+                series: [
+                    {
+                        type: 'gauge',
+                        startAngle: 90,
+                        endAngle: -270,
+                        pointer: {
+                            show: false
+                        },
+                        progress: {
+                            show: true,
+                            overlap: false,
+                            roundCap: true,
+                            clip: false,
+                            itemStyle: {
+                                borderWidth: 1,
+                                borderColor: '#464646'
+                            }
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                width: 15
+                            }
+                        },
+                        splitLine: {
+                            show: false,
+                            distance: 0,
+                            length: 10
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false,
+                            distance: 50
+                        },
+                        data: [{
+                            value: res.data.jvm.used,
+                            name: '网站负载',
+                            title: {
+                                offsetCenter: ['0%', '-20%']
+                            },
+                            detail: {
+                                valueAnimation: true,
+                                offsetCenter: ['0%', '0%']
+                            }
+                        }],
+                        title: {
+                            fontSize: 20
+                        },
+                        detail: {
+                            width: 50,
+                            height: 14,
+                            fontSize: 14,
+                            color: 'auto',
+                            borderColor: 'auto',
+                            borderRadius: 20,
+                            borderWidth: 1,
+                            formatter: '{value}%'
+                        }
+                    }
+                ]
+            };
+            jvm_info.setOption(option_jvm)
             $("#mem_label").text(res.data.mem.memUsed + '/' + res.data.mem.memRam + '(GB)')
+
+
+            $("#disk_label").text(res.data.disk.used + '/' + res.data.disk.total + '(GB)')
         })
     }
     const network_option = {
