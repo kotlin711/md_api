@@ -88,7 +88,7 @@ public final class MonitorUtil {
         float totalMem = Runtime.getRuntime().totalMemory();
         float maxMem = Runtime.getRuntime().maxMemory();
         float freeMem = Runtime.getRuntime().freeMemory();
-        String usege = new DecimalFormat("0.00").format(100 - (freeMem / totalMem * 100));
+        String usege = new DecimalFormat("0.00").format(  (freeMem / maxMem * 100));
 
         return new JVMInfoVO(Sigar.formatSize(Runtime.getRuntime().totalMemory()), Sigar.formatSize(Runtime.getRuntime().maxMemory())
                 , Sigar.formatSize(Runtime.getRuntime().freeMemory()), usege);

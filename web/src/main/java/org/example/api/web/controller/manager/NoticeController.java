@@ -49,29 +49,7 @@ public class NoticeController {
     }
 
     @PostMapping("/save")
-    public Result save(Notice notice, String data, Integer vip) {
-
-
-        switch (notice.getEventType()) {
-            case 1: {
-                notice.setVersion(data);
-                break;
-            }
-            case 2: {
-                notice.setDeviceId(data);
-                break;
-            }
-            case 3: {
-                notice.setVipType(vip);
-            }
-            case 4: {
-                notice.setUsername(data);
-            }
-            case 5: {
-                notice.setUsername(data);
-            }
-        }
-
+    public Result save(Notice notice) {
         if (noticeService.save(notice)) {
             return Result.ok();
         }
@@ -79,28 +57,10 @@ public class NoticeController {
     }
 
     @PostMapping("/update")
-    public Result update(Notice notice, String data, Integer vip) {
+    public Result update(Notice notice) {
 
 
-        switch (notice.getEventType()) {
-            case 1: {
-                notice.setVersion(data);
-                break;
-            }
-            case 2: {
-                notice.setDeviceId(data);
-                break;
-            }
-            case 3: {
-                notice.setVipType(vip);
-            }
-            case 4: {
-                notice.setUsername(data);
-            }
-            case 5: {
-                notice.setUsername(data);
-            }
-        }
+
         if (noticeService.updateById(notice)) {
             return Result.ok();
         }

@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="/static/css/xadmin.css">
         <script src="/static/js/echarts.min.js" type="text/javascript"></script>
         <script src="/static/js/jquery.min.js" type="text/javascript"></script>
-
+        <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css">
         <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="/static/js/xadmin.js"></script>
         <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
@@ -43,13 +43,13 @@
                 <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-body ">
-                            <blockquote class="layui-elem-quote">欢迎管理员：
-                                <span class="x-red"></span>！当前时间:
+                            <blockquote class="layui-elem-quote">欢迎管理员!
+<!--                                <span class="x-red"></span>！当前时间:-->
                             </blockquote>
                         </div>
                     </div>
                 </div>
-                <div class="layui-col-md12">
+                <div class="layui-col-md12" hidden>
                     <div class="layui-card">
                         <div class="layui-card-header">数据统计</div>
                         <div class="layui-card-body ">
@@ -71,6 +71,56 @@
 <!--                    <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由x-admin提供技术支持。</blockquote></div>-->
             </div>
             <div class="layui-row layui-col-space15">
+                <div class="layui-col-md3">
+                    <div  id="cpu_info"style="height: 250px;"></div>
+                    <p class="info" id="cpu_label"></p>
+                </div>
+                <div class="layui-col-md3">
+                    <div  id="mem" style="height: 250px;"></div>
+                    <p class="info" id="mem_label"></p>
+                </div>
+                <div class="layui-col-md3">
+                    <div  id="disk" style="height: 250px;">111</div>
+                    <p class="info" id="disk_label"></p>
+                </div>
+                <div class="layui-col-md3">
+                    <div  id="jvm" style="height: 250px;">111</div>
+                    <p class="info" id="jvm_label"></p>
+                </div>
+            </div>
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+
+                    <div id="base" class="stack_line"></div>
+
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header"> <h1>用户 总数</h1></div>
+                        <div class="layui-card-body">
+                            <h2 id="u_count">VIP 总数</h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header"> <h1>VIP 总数</h1></div>
+                        <div class="layui-card-body">
+                            <h2 id="vip_count">VIP 总数</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+
+                    <div id="vip" class="stack_line"></div>
+
+                </div>
+
+            </div>
+            <div class="layui-row layui-col-space15" hidden>
                 <div class="layui-tab">
                     <ul class="layui-tab-title">
                         <li class="layui-this">用户</li>
@@ -82,33 +132,17 @@
                     </ul>
                     <div class="layui-tab-content">
                         <div class="layui-tab-item layui-show">
-                            <div id="base" class="stack_line"></div>
+<!--                            <div id="base" class="stack_line"></div>-->
                         </div>
                         <div class="layui-tab-item layui-show">
-                            <div id="vip" class="stack_line"></div>
+<!--                            <div id="vip" class="stack_line"></div>-->
                         </div>
                         <div class="layui-tab-item">
-                            <div class="stack_line" id="network_info"></div>
+
+
+            <div class="stack_line" id="network_info"></div>
                         </div>
                         <div class="layui-tab-item">
-                            <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md3">
-                                    <div  id="cpu_info"style="height: 300px;"></div>
-                                    <p class="info" id="cpu_label"></p>
-                                </div>
-                                <div class="layui-col-md3">
-                                    <div  id="mem" style="height: 300px;"></div>
-                                    <p class="info" id="mem_label"></p>
-                                </div>
-                                <div class="layui-col-md3">
-                                    <div  id="disk" style="height: 300px;">111</div>
-                                    <p class="info" id="disk_label"></p>
-                                </div>
-                                <div class="layui-col-md3">
-                                    <div  id="jvm" style="height: 300px;">111</div>
-                                    <p class="info" id="jvm_label"></p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,8 +162,8 @@
     const mem_info = echarts.init(document.getElementById("mem"))
     const disk_info = echarts.init(document.getElementById("disk"))
     const jvm_info = echarts.init(document.getElementById("jvm"))
-
-
+    server_shows()
+    vip_shows();
 
     let base_line = echarts.init(document.getElementById('base'));
     let vip_line = echarts.init(document.getElementById('vip'));
@@ -224,6 +258,12 @@
 
             let user = res.data.user;
             for (const userKey in user) {
+                if (user[userKey].name==='VIP用户数'){
+                    $('#vip_count').text(user[userKey].value)
+                }
+                if (user[userKey].name==='总数'){
+                    $('#u_count').text(user[userKey].value)
+                }
                 let tags="<li class=\"layui-col-md2 layui-col-xs6\"><a href=\"javascript:;\" class=\"x-admin-backlog-body\"><h3>"+user[userKey].name+"</h3><p><cite>"+user[userKey].value+"</cite></p></a></li>"
                 userCount.append(tags);
             }

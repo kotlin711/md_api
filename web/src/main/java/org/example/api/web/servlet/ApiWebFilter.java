@@ -78,6 +78,9 @@ public class ApiWebFilter implements Filter {
      * @return
      */
     private boolean validation(HttpServletRequest request) {
+        if (request.getParameter("t") == null) {
+            return false;
+        }
         String number = DesUtil.getDesUtil(key).decryption(request.getParameter("t"));
         System.out.println("IS_NUMBER" + number);
         if (StringUtils.isNumeric(number)) {

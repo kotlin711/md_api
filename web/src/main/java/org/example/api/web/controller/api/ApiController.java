@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Tag(name = "前端APi", description = "前端APi")
 @RestController
@@ -124,6 +125,7 @@ public class ApiController {
                 String token = JwtUtils.getToken(stringStringHashMap);
                 loginService.save_data(one.getId(),token);
                 HashMap<String, Object> data = new HashMap<>();
+                one.setPwd(null);
                 data.put("token", token);
                 data.put("info", one);
                 return Result.ok(data);
@@ -295,7 +297,7 @@ public class ApiController {
     @Operation(summary = "获取公告", description = "获取广告")
     @GetMapping("/user/notice")
     public Result notice_list() {
-        return Result.ok(noticeService.list());
+        return Result.ok(noticeService.list().stream().limit(10).collect(Collectors.toList()));
     }
 
     @Operation(summary = "商品列表", description = "商品列表",hidden = true)
@@ -303,6 +305,13 @@ public class ApiController {
     public PageResult provide_list(@Parameter(name = "page", description = "页码", in = ParameterIn.QUERY, required = true) @RequestParam(name = "page", defaultValue = "1") Long page, @Parameter(name = "limit", description = "大小", in = ParameterIn.QUERY, required = true) @RequestParam(name = "limit", defaultValue = "10") Long limit) {
         return PageResult.build(provideservice.page(new Page<Provide>(page, limit)).getRecords(), provideservice.count());
     }
+    @Operation(summary = "商品列表2", description = "商品列表")
+    @GetMapping("/user/promo")
+    public PageResult promo_list(@Parameter(name = "page", description = "页码", in = ParameterIn.QUERY, required = true) @RequestParam(name = "page", defaultValue = "1") Long page, @Parameter(name = "limit", description = "大小", in = ParameterIn.QUERY, required = true) @RequestParam(name = "limit", defaultValue = "10") Long limit) {
+        return PageResult.build(promoService.page(new Page<Promo>(page, limit)).getRecords(), provideservice.count());
+    }
+
+
 
     @Operation(summary = "购买商品", description = "购买商品")
     @PostMapping("/user/provide/pay")
@@ -340,7 +349,7 @@ public class ApiController {
         return Result.fail();
     }
 
-    @Operation(summary = "获取商品列表", description = "最新活动")
+    @Operation(summary = "获取商品列表", description = "最新活动商品")
     @GetMapping("/user/provide/now")
     public PageResult now(@Parameter(name = "page", description = "页码", in = ParameterIn.QUERY, required = true) @RequestParam(name = "page", defaultValue = "1") Long page, @Parameter(name = "limit", description = "大小", in = ParameterIn.QUERY, required = true) @RequestParam(name = "limit", defaultValue = "10") Long limit) {
 
@@ -380,6 +389,7 @@ public class ApiController {
                         String token = JwtUtils.getToken(stringStringHashMap);
                         loginService.save_data(user.getId(), token);
                         HashMap<String,Object> data=new HashMap<>();
+                        user.setPwd(null);
                         data.put("token",token);
                         data.put("info",user);
                         return Result.ok(data);

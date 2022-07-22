@@ -1,6 +1,9 @@
 package org.example.api.web;
 
+import org.example.api.common.io.MonitorUtil;
 import org.example.api.model.dto.OrderDto;
+import org.hyperic.sigar.FileSystem;
+import org.hyperic.sigar.SigarException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -10,7 +13,18 @@ import java.lang.reflect.Field;
 class WebApplicationTests {
 
     @Test
-    void contextLoads() {
+    void contextLoads() throws SigarException {
+
+        FileSystem fslist[] = MonitorUtil.getInstance().getSigar().getFileSystemList();
+        System.out.println("??????????");
+
+        for (FileSystem fileSystem : fslist) {
+
+            System.out.println(MonitorUtil.getInstance().disk_info(fileSystem.getDirName()));
+
+        }
+
+
     }
     @Test
     void obj_to_xml(){

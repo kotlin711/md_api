@@ -40,7 +40,6 @@ public class User implements Serializable {
     @ExcelProperty(value = "密码",index = 2)
     @ColumnWidth(value = 20)
     @Schema(name = "pwd",description = "密码")
-    @JsonIgnore
     private String pwd;
     @ExcelProperty(value = "头像",index = 3)
     @ColumnWidth(value = 20)

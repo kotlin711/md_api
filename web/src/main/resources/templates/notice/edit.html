@@ -22,13 +22,11 @@
 <div class="layui-fluid">
     <div class="layui-row">
         <form class="layui-form">
-
-            <input name="id" th:value="${data.id}" hidden>
             <div class="layui-form-item">
                 <label for="L_username" class="layui-form-label">
                     <span class="x-red">*</span>标题</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_username" name="title"   th:value="${data.title}"  required="" lay-verify="nikename" autocomplete="off"
+                    <input type="text" id="L_username" th:value="${data.title}"  name="title" required="" lay-verify="nikename" autocomplete="off"
                            class="layui-input"></div>
             </div>
 
@@ -36,65 +34,42 @@
                 <label for="L_email" class="layui-form-label">
                     <span class="x-red">*</span>内容</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_email" name="content"  th:value="${data.content}"  required="" lay-verify="flag" autocomplete="off"
-                           class="layui-input"></div>
+                    <input type="text" id="L_email" name="content" required="" lay-verify="flag" autocomplete="off"
+                           class="layui-input" th:value="${data.content}"></div>
 
-                <div class="layui-form-item">
-                    <label for="L_pass" class="layui-form-label">
-                        <span class="x-red">*</span>链接</label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_pass" name="link"    th:value="${data.link}"  required="" lay-verify="pass" autocomplete="off"
-                               class="layui-input"></div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_pass" class="layui-form-label">
-                        <span class="x-red">*</span>条件</label>
-                    <div class="layui-input-inline">
-                        <select name="eventType" id="contrller" lay-filter="contrller">
-                            <option value="1">指定的版本号</option>
-                            <option value="2">指定的设备id</option>
-                            <option value="3">指定会员等级</option>
-                            <option value="4">指定的用户</option>
-                            <option value="5">全部用户</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-form-item" hidden id="vip">
-                    <label for="L_pass" class="layui-form-label">
-                        <span class="x-red">*</span>VIP等级</label>
-                    <div class="layui-input-inline">
-                        <select id="data" name="vip">
-                            <option value="0">普通会员</option>
-                            <option value="1">季度会员</option>
-                            <option value="2">半年会员</option>
-                            <option value="3">年度会员</option>
-                            <option value="4">永久会员</option>
-                        </select>
-                    </div>
-                </div>
+
                 <div class="layui-form-item">
                     <label for="L_pass" class="layui-form-label">
                         <span class="x-red">*</span>事件</label>
                     <div class="layui-input-inline">
+                        <input type="text"  name="event"  th:value="${data.event}"  required="" lay-verify="pass" autocomplete="off"
+                               class="layui-input"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_pass" class="layui-form-label">
+                        <span class="x-red">*</span>action</label>
+                    <div class="layui-input-inline">
                         <select id="action" name="action">
-                            <option value="0">打开连接</option>
-                            <option value="1">弹窗</option>
-
+                            <option value="0">打开网站</option>
+                            <option value="1">跳转程序页</option>
+                            <option value="1">打开小程序</option>
                         </select>
                     </div>
                 </div>
 
+
+
                 <div class="layui-form-item">
                     <label for="L_pass" class="layui-form-label">
-                        <span class="x-red">*</span>输入数据</label>
+                        <span class="x-red">*</span>数据</label>
                     <div class="layui-input-inline">
-                        <input type="text" id="datas" name="data"   required="" lay-verify="pass" autocomplete="off"
-                               class="layui-input"></div>
+                        <input type="text" id="datas" name="data" required="" lay-verify="pass" autocomplete="off"
+                               th:value="${data.data}"       class="layui-input"></div>
                 </div>
 
                 <div class="layui-form-item">
                     <label for="L_repass" class="layui-form-label"></label>
-                    <button class="layui-btn" lay-filter="add" type="button" lay-submit="">更新</button>
+                    <button class="layui-btn" lay-filter="add" type="button" lay-submit="">增加</button>
                 </div>
         </form>
     </div>

@@ -100,33 +100,18 @@
                     {field: 'id', title: 'id'},
                     {field: 'title', title: '标题'},
                     {field: 'content', title: '内容'},
-                    {field: 'link', title: '链接'},
-                    {field: 'eventType', title: '条件', templet: function(d){
-                            switch (d.eventType){
-                                case  1:{
-                                    return "指定的版本号"+d.version
-                                }
-                                case  2:{
-                                    return "指定的设备id"+d.deviceId
-                                }
-                                case  3:{
-                                    return "指定会员等级"+d.vipType
-                                }
-                                case  4:{
-                                    return "指定的用户"+d.username
-                                }
-                                case  5:{
-                                    return "全部用户"
-                                }
-                            }
-                    }},
-                    {field: 'action', title: '事件', templet: function(d){
+                    {field: 'data', title: '数据'},
+                    {field: 'event', title: '事件'},
+                    {field: 'action', title: '动作', templet: function(d){
                             switch (d.action){
                                 case  0:{
                                     return "打开网站"
                                 }
                                 case  1:{
                                     return "跳转程序页"
+                                }
+                                case  2:{
+                                    return "打开小程序"
                                 }
                             }
                         }},
