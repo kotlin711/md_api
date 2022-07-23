@@ -339,8 +339,11 @@ public class ApiController {
         Order order = new Order();
         order.setUid(Integer.valueOf(uid));
 
-
         Promo byId = promoService.getById(pid);
+
+
+
+
 //        byId.get
         order.setPromoTitle(byId.getTitle());
         order.setProvideAmount(byId.getProvideAmount());

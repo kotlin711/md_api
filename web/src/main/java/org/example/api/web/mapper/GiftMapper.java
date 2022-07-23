@@ -16,7 +16,7 @@ import org.example.api.model.entity.Gift;
 public interface GiftMapper extends BaseMapper<Gift> {
 
 
-    @Update("update md_gift set state = 1,username=(select * from md_user where md_user.id=#{uid}) where `key`=#{code};")
+    @Update("update md_gift set state = 1,username=(select md_user.username from md_user where md_user.id=#{uid}) where `key`=#{code};")
     boolean bind(String uid, String code);
 
     @Select("select  if(count(*)>0,false,true) from md_gift where `key`=#{code} and username=null;")

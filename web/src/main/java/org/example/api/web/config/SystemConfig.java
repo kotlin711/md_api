@@ -63,7 +63,6 @@ public class SystemConfig {
         System.out.println("**********支付宝SDK初始化完成**********");
         if (!new File(upload_path).exists()){
             System.out.println("**********上传文件目录初始化失败**********");
-            System.exit(0);
         }
 
     }
