@@ -1,6 +1,7 @@
 package org.example.api.web.controller.api;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.api.model.entity.Order;
 import org.example.api.web.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "/pay")
-@AllArgsConstructor
-
+@Slf4j
 public class PayController {
 
 
@@ -36,7 +36,10 @@ public class PayController {
     @PostMapping(value = "/fallback")
     public Object notifyAsync(HttpServletRequest request) {
         Map map = request.getParameterMap();
-        System.out.println("--------------->支付完成时，服务端返回的参数" + map.toString());
+
+
+        log.info("--------------->支付完成时，服务端返回的参数" + map.toString());
+
         System.out.println(map.toString());
         String body = (String) map.get("body");
         String out_trade_no = (String) map.get("out_trade_no");//获取商户之前传给支付宝的订单号（商户系统的唯一订单号）

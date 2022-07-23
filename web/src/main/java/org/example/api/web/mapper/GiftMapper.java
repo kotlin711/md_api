@@ -22,6 +22,9 @@ public interface GiftMapper extends BaseMapper<Gift> {
     @Select("select  count(*) from md_gift where `key`=#{code} and state=1;")
     int does_it_exist(String code);
 
+
+
+
     @Select("select provide_name from md_gift where  `key`=#{code};")
     Integer get_name(String code);
 }
