@@ -112,16 +112,20 @@ public class UserController {
 
         switch (user.getVip()) {
             case 1: {
-
                 user.setVieEndTime(LocalDateTime.now().plusDays(90));
+                break;
             }
             case 2: {
                 user.setVieEndTime(LocalDateTime.now().plusDays(90 * 2));
-
+                break;
             }
             case 3: {
                 user.setVieEndTime(LocalDateTime.now().plusDays(90 * 4));
-
+                break;
+            }
+            case 4: {
+                user.setVieEndTime(LocalDateTime.now().plusDays(90 * 9999));
+                break;
             }
         }
 
@@ -133,18 +137,28 @@ public class UserController {
 
     @PostMapping("/update")
     public Result update(User user) {
+
+
+        System.out.println("VIP:"+user.getVip());
         switch (user.getVip()) {
             case 1: {
                 user.setVieEndTime(LocalDateTime.now().plusDays(90));
+                break;
             }
             case 2: {
                 user.setVieEndTime(LocalDateTime.now().plusDays(90 * 2));
-
+                break;
             }
             case 3: {
                 user.setVieEndTime(LocalDateTime.now().plusDays(90 * 4));
-
+                break;
             }
+            case 4: {
+                user.setVieEndTime(LocalDateTime.now().plusDays(90 * 9999));
+                break;
+            }
+
+
         }
         if (userService.updateById(user)) {
             return Result.ok();

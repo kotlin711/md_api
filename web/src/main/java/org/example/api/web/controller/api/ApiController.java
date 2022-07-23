@@ -258,15 +258,19 @@ public class ApiController {
                 switch (vip) {
                     case 0: {
                         user.setVieEndTime(user.getVieEndTime().plusDays(3));
+                        break;
                     }
                     case 1: {
                         user.setVieEndTime(user.getVieEndTime().plusDays(30));
+                        break;
                     }
                     case 2: {
                         user.setVieEndTime(user.getVieEndTime().plusDays(90 * 4));
+                        break;
                     }
                     case 3: {
                         user.setVieEndTime(user.getVieEndTime().plusDays(90 * 1000));
+                        break;
                     }
                 }
             } else {
@@ -275,15 +279,19 @@ public class ApiController {
                 switch (vip) {
                     case 0: {
                         user.setVieEndTime(LocalDateTime.now().plusDays(3));
+                        break;
                     }
                     case 1: {
                         user.setVieEndTime(LocalDateTime.now().plusDays(30));
+                        break;
                     }
                     case 2: {
                         user.setVieEndTime(LocalDateTime.now().plusDays(90 * 4));
+                        break;
                     }
                     case 3: {
                         user.setVieEndTime(LocalDateTime.now().plusDays(90 * 1000));
+                        break;
                     }
                 }
             }
