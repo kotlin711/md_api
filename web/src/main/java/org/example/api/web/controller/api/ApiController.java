@@ -339,20 +339,20 @@ public class ApiController {
         Order order = new Order();
         order.setUid(Integer.valueOf(uid));
 
-        Promo byId = promoService.getById(pid);
-        /**
-         *判断活动商品是否存在 不存在则使用   普通商品
-         */
-        if (pid!=null){
-            order.setPromoTitle(byId.getTitle());
-            order.setProvideAmount(byId.getProvideAmount());
-            order.setProvideName(byId.getProvideName());
+
+        LambdaQueryWrapper<Promo> promoLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        promoLambdaQueryWrapper.eq(Promo::getPid, pid);
+        Promo one = promoService.getOne(promoLambdaQueryWrapper);
+        if (one != null) {
+            order.setPromoTitle(one.getTitle());
+            order.setProvideAmount(one.getProvideAmount());
+            order.setProvideName(one.getProvideName());
             switch (payType) {
 
                 case 1: {
                     //zfb
                     if (orderService.save(order)) {
-                        return payUtil.alipay(byId.getProvideName(), byId.getProvideAmount().toString(), order.getId().toString());
+                        return payUtil.alipay(one.getProvideName(), one.getProvideAmount().toString(), order.getId().toString());
                     }
                 }
                 case 2: {
@@ -363,6 +363,7 @@ public class ApiController {
                 }
             }
         }else {
+
             Provide goods = provideservice.getById(pid);
             order.setProvideName(goods.getName());
             order.setProvideAmount(goods.getAmount());
@@ -383,9 +384,10 @@ public class ApiController {
                     }
                 }
             }
-
-
         }
+
+
+
 
 
 //        byId.get
