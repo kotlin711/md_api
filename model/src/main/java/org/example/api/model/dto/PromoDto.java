@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PromoDto {
+        private Integer pid;
         private String title;
         private String content;
         private String provide_name;

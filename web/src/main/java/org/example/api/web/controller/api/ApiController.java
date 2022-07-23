@@ -340,31 +340,60 @@ public class ApiController {
         order.setUid(Integer.valueOf(uid));
 
         Promo byId = promoService.getById(pid);
+        /**
+         *判断活动商品是否存在 不存在则使用   普通商品
+         */
+        if (pid!=null){
+            order.setPromoTitle(byId.getTitle());
+            order.setProvideAmount(byId.getProvideAmount());
+            order.setProvideName(byId.getProvideName());
+            switch (payType) {
+
+                case 1: {
+                    //zfb
+                    if (orderService.save(order)) {
+                        return payUtil.alipay(byId.getProvideName(), byId.getProvideAmount().toString(), order.getId().toString());
+                    }
+                }
+                case 2: {
+                    //wx
+                }
+                case 3: {
+                    //google
+                }
+            }
+        }else {
+            Provide goods = provideservice.getById(pid);
+            order.setProvideName(goods.getName());
+            order.setProvideAmount(goods.getAmount());
+
+            if (goods != null) {
+                switch (payType) {
+                    case 1: {
+                        //zfb
+                        if (orderService.save(order)) {
+                            return payUtil.alipay(goods.getName(), goods.getName().toString(), order.getId().toString());
+                        }
+                    }
+                    case 2: {
+                        //wx
+                    }
+                    case 3: {
+                        //google
+                    }
+                }
+            }
 
 
+        }
 
 
 //        byId.get
-        order.setPromoTitle(byId.getTitle());
-        order.setProvideAmount(byId.getProvideAmount());
-        order.setProvideName(byId.getProvideName());
+
         /*
          * 判断支付类型
          */
-        switch (payType) {
-            case 1: {
-                //zfb
-                if (orderService.save(order)) {
-                    return payUtil.alipay(byId.getProvideName(), byId.getProvideAmount().toString(), order.getId().toString());
-                }
-            }
-            case 2: {
-                //wx
-            }
-            case 3: {
-                //google
-            }
-        }
+
 
         return Result.fail();
     }

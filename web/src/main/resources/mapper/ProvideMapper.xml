@@ -10,7 +10,7 @@
         <result property="create_time" column="create_time" javaType="java.lang.String"/>
 
         <association property="promo" javaType="org.example.api.model.dto.PromoDto" >
-
+            <result property="pid" column="pid" javaType="java.lang.String"/>
             <result property="title" column="title" javaType="java.lang.String"/>
             <result property="content" column="content" javaType="java.lang.String"/>
             <result property="provide_name" column="provide_name" javaType="java.lang.String"/>
@@ -23,7 +23,7 @@
     <select id="query_goods" resultMap="goods_map" parameterType="java.lang.Long">
         SELECT g.id as id, name, amount, g.create_time as create_time
              ,  title, content, provide_name, promo_amount
-             , provide_amount, begin_time, end_time
+             , provide_amount, begin_time, end_time,p.id as pid
         FROM md_provide g
                  LEFT JOIN md_promo p ON g.id = p.pid
         LIMIT #{page}, #{limit};
