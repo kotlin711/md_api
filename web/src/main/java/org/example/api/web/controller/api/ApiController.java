@@ -250,7 +250,7 @@ public class ApiController {
     @Operation(summary = "激活商品", description = "激活商品")
     @PostMapping("/user/activation_vip")
     public Result activation_vip(@Parameter(hidden = true) @Userid String id, @Parameter(description = "激活码", in = ParameterIn.QUERY, required = true) String code) {
-        if (giftService.getBaseMapper().does_it_exist(code)) {
+        if (giftService.getBaseMapper().does_it_exist(code)==0) {
             giftService.getBaseMapper().bind(id, code);
             Integer vip = giftService.getBaseMapper().get_name(code);
             User user = userService.getById(id);
@@ -299,8 +299,6 @@ public class ApiController {
             userService.updateById(user);
             return Result.ok().message("绑定成功");
         }
-
-
         return Result.fail().message("不存在");
     }
 
