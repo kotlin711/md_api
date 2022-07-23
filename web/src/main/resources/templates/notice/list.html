@@ -57,7 +57,7 @@
     </script>
     <script type="text/html" id="user_bar">
         <button type="button" class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
-        <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">删除</button>
+        <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">编辑</button>
 
     </script>
     <script type="text/html" id="imgtmp">
@@ -100,21 +100,21 @@
                     {field: 'id', title: 'id'},
                     {field: 'title', title: '标题'},
                     {field: 'content', title: '内容'},
-                    {field: 'data', title: '数据'},
-                    {field: 'event', title: '事件'},
-                    {field: 'action', title: '动作', templet: function(d){
-                            switch (d.action){
-                                case  0:{
-                                    return "打开网站"
-                                }
-                                case  1:{
-                                    return "跳转程序页"
-                                }
-                                case  2:{
-                                    return "打开小程序"
-                                }
-                            }
-                        }},
+                    // {field: 'data', title: '数据'},
+                    // {field: 'event', title: '事件'},
+                    // {field: 'action', title: '动作', templet: function(d){
+                    //         switch (d.action){
+                    //             case  0:{
+                    //                 return "打开网站"
+                    //             }
+                    //             case  1:{
+                    //                 return "跳转程序页"
+                    //             }
+                    //             case  2:{
+                    //                 return "打开小程序"
+                    //             }
+                    //         }
+                    //     }},
 
 
                     {fixed: 'right', title: '操作',  toolbar: '#user_bar'},
