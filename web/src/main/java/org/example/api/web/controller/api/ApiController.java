@@ -323,18 +323,12 @@ public class ApiController {
         return Result.ok(noticeService.getBaseMapper().query_notice());
     }
 
-    @Operation(summary = "商品列表", description = "商品列表", hidden = true)
-    @GetMapping("/user/provide")
-    public PageResult provide_list(@Parameter(name = "page", description = "页码", in = ParameterIn.QUERY, required = true) @RequestParam(name = "page", defaultValue = "1") Long page, @Parameter(name = "limit", description = "大小", in = ParameterIn.QUERY, required = true) @RequestParam(name = "limit", defaultValue = "10") Long limit) {
-        return PageResult.build(provideservice.page(new Page<Provide>(page, limit)).getRecords(), provideservice.count());
-    }
 
-    @Operation(summary = "商品列表2", description = "商品列表")
-    @GetMapping("/user/promo")
-    public PageResult promo_list(@Parameter(name = "page", description = "页码", in = ParameterIn.QUERY, required = true) @RequestParam(name = "page", defaultValue = "1") Long page, @Parameter(name = "limit", description = "大小", in = ParameterIn.QUERY, required = true) @RequestParam(name = "limit", defaultValue = "10") Long limit) {
-        return PageResult.build(promoService.page(new Page<Promo>(page, limit)).getRecords(), provideservice.count());
+    @Operation(summary = "商品列表", description = "商品列表")
+    @GetMapping("/user/goods")
+    public PageResult good_list(@Parameter(name = "page", description = "页码", in = ParameterIn.QUERY, required = true) @RequestParam(name = "page", defaultValue = "1") Long page, @Parameter(name = "limit", description = "大小", in = ParameterIn.QUERY, required = true) @RequestParam(name = "limit", defaultValue = "10") Long limit) {
+        return PageResult.build(provideservice.page(page,limit), provideservice.count());
     }
-
 
     @Operation(summary = "购买商品", description = "购买商品")
     @PostMapping("/user/provide/pay")
