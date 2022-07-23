@@ -4,11 +4,15 @@ package org.example.api.web.config;
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.kernel.Config;
 import org.example.api.common.io.MonitorUtil;
+import org.example.api.web.service.impl.NoticeServiceImpl;
+import org.example.api.web.service.impl.ProvideServiceImpl;
 import org.example.api.web.util.OssUploadUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import javax.management.Query;
 import java.io.File;
 
 @Configuration
@@ -42,6 +46,11 @@ public class SystemConfig {
 
     @Value("${alipay.notifyUrl}")
     private String notifyUrl;
+
+
+
+
+
 
 
     @PostConstruct

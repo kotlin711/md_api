@@ -1,7 +1,10 @@
 package org.example.api.web.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.example.api.model.dto.GoodsDto;
 import org.example.api.model.entity.Provide;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,6 @@ import org.example.api.model.entity.Provide;
  */
 public interface IProvideService extends IService<Provide> {
 
+
+    List<GoodsDto> page(Long page, Long limit);
 }

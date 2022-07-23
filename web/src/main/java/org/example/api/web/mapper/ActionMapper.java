@@ -1,8 +1,8 @@
 package org.example.api.web.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Insert;
 import org.example.api.model.dto.NoticeDto;
+import org.example.api.model.entity.Action;
 import org.example.api.model.entity.Notice;
 
 import java.util.List;
@@ -15,10 +15,9 @@ import java.util.List;
  * @author crying711
  * @since 2022-06-17
  */
-public interface NoticeMapper extends BaseMapper<Notice> {
+public interface ActionMapper extends BaseMapper<Action> {
 
 
-   List<NoticeDto> query_notice();
 
 
 }

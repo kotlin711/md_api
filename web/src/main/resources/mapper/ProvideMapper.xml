@@ -2,4 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.api.web.mapper.ProvideMapper">
 
+
+    <resultMap id="goods_map" type="org.example.api.model.dto.GoodsDto">
+        <result property="id" column="id" javaType="java.lang.Integer"/>
+        <result property="name" column="name" javaType="java.lang.String"/>
+        <result property="amount" column="amount" javaType="java.lang.String"/>
+        <result property="create_time" column="create_time" javaType="java.lang.String"/>
+
+        <association property="promo" javaType="org.example.api.model.dto.PromoDto" >
+
+            <result property="title" column="title" javaType="java.lang.String"/>
+            <result property="content" column="content" javaType="java.lang.String"/>
+            <result property="provide_name" column="provide_name" javaType="java.lang.String"/>
+            <result property="promo_amount" column="promo_amount" javaType="java.lang.String"/>
+            <result property="begin_time" column="begin_time" javaType="java.lang.String"/>
+            <result property="end_time" column="end_time" javaType="java.lang.String"/>
+
+        </association>
+    </resultMap>
+    <select id="query_goods" resultMap="goods_map" parameterType="java.lang.Long">
+        SELECT g.id as id, name, amount, g.create_time as create_time
+             ,  title, content, provide_name, promo_amount
+             , provide_amount, begin_time, end_time
+        FROM md_provide g
+                 LEFT JOIN md_promo p ON g.id = p.pid
+        LIMIT #{page}, #{limit};
+    </select>
+
 </mapper>

@@ -2,13 +2,13 @@ package org.example.api.model.entity;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -20,19 +20,15 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("md_notice")
-public class Notice implements Serializable {
+@TableName("md_action")
+public class Action implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @ExcelProperty(value = "ID",index = 0)
-    @ColumnWidth(value = 20)
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    @ExcelProperty(value = "标题",index = 1)
-    @ColumnWidth(value = 20)
-    private String title;
-    @ExcelProperty(value = "内容",index = 2)
-    @ColumnWidth(value = 20)
-    private String content;
+    private Integer nid;
+    private String text;
+    private Integer action;
+    private String data;
 
 }

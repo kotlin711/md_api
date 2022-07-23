@@ -2,4 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.api.web.mapper.NoticeMapper">
 
+
+
+    <resultMap id="notice_res_map" type="org.example.api.model.dto.NoticeDto">
+        <id property="id" column="id" javaType="java.lang.Integer"/>
+        <result property="title" column="title" javaType="java.lang.String"/>
+        <result property="content" column="content" javaType="java.lang.String"/>
+        <collection property="fillter" javaType="ArrayList" ofType="org.example.api.model.dto.FillterDto">
+            <id property="id" column="aid" javaType="java.lang.Integer"/>
+            <result property="nid" column="nid" javaType="java.lang.Integer"/>
+            <result property="text" column="text" javaType="java.lang.String"/>
+            <result property="action" column="action" javaType="java.lang.Integer"/>
+            <result property="data" column="data" javaType="java.lang.String"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="query_notice" resultMap="notice_res_map">
+        SELECT n.id AS id, title, content, a.id AS aid, nid
+             , text, action, data
+        FROM md_notice n
+            LEFT JOIN md_action a ON n.id = a.nid
+            LIMIT 10;
+    </select>
+
 </mapper>

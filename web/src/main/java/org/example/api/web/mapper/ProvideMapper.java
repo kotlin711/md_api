@@ -1,7 +1,10 @@
 package org.example.api.web.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.example.api.model.dto.GoodsDto;
 import org.example.api.model.entity.Provide;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,5 +16,5 @@ import org.example.api.model.entity.Provide;
  */
 public interface ProvideMapper extends BaseMapper<Provide> {
 
-
+    List<GoodsDto> query_goods(Long page,Long limit);
 }
