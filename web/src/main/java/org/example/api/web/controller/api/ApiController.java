@@ -368,20 +368,18 @@ public class ApiController {
             order.setProvideName(goods.getName());
             order.setProvideAmount(goods.getAmount());
 
-            if (goods != null) {
-                switch (payType) {
-                    case 1: {
-                        //zfb
-                        if (orderService.save(order)) {
-                            return payUtil.alipay(goods.getName(), goods.getName().toString(), order.getId().toString());
-                        }
+            switch (payType) {
+                case 1: {
+                    //zfb
+                    if (orderService.save(order)) {
+                        return payUtil.alipay(goods.getName(), goods.getName().toString(), order.getId().toString());
                     }
-                    case 2: {
-                        //wx
-                    }
-                    case 3: {
-                        //google
-                    }
+                }
+                case 2: {
+                    //wx
+                }
+                case 3: {
+                    //google
                 }
             }
         }
